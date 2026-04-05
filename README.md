@@ -28,10 +28,23 @@ The main goal is not to build a production-ready OS, but to explore concepts suc
 ## 🏗️ Project Structure
 
 ```
-lucasos/
+lucasOS/
+├── include/
+│   ├── drivers/
+│   │   └── terminal.h
+│   └── lib/
+│       └── kstring.h
 ├── src/
-│   ├── boot.s
-│   └── kernel.c
+│   ├── arch/
+│   │   └── i386/
+│   │       └── boot/
+│   │           └── boot.s
+│   ├── drivers/
+│   │   └── terminal.c
+│   ├── kernel/
+│   │   └── kmain.c
+│   └── lib/
+│       └── kstring.c
 ├── linker.ld
 ├── grub.cfg
 ├── Makefile
