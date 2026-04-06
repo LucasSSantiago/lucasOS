@@ -19,7 +19,9 @@ The main goal is not to build a production-ready OS, but to explore concepts suc
 
 - Multiboot compliant kernel
 - Written in C and x86 Assembly
-- Direct VGA text mode output
+- Direct VGA text mode terminal
+- Terminal support for newline and scrolling
+- Terminal clear and color support
 - Custom linker script
 - Bootable ISO using GRUB
 
@@ -95,7 +97,8 @@ Through this project, I learned:
 
 ## 🔮 Future Plans
 
-- Improve terminal (newline, scrolling)
+- Add VGA hardware cursor support
+- Implement serial output for debugging
 - Implement GDT (Global Descriptor Table)
 - Add interrupt handling (IDT)
 - Basic keyboard input

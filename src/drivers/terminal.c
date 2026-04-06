@@ -3,6 +3,7 @@
 
 #include <drivers/terminal.h>
 #include <lib/kstring.h>
+#include <arch/i386/io.h>
 
 uint8_t terminal_make_color(uint8_t fg, uint8_t bg) {
     return fg | bg << 4;
@@ -30,6 +31,17 @@ static void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
     terminal_buffer[index] = vga_entry(c, color);
 }
 
+
+static void terminal_update_cursor(void) {
+    uint16_t pos = terminal_row * VGA_WIDTH + terminal_column;
+
+    outb(0x3D4, 0x0F);
+    outb(0x3D5, (uint8_t)(pos & 0xFF));
+
+    outb(0x3D4, 0x0E);
+    outb(0x3D5, (uint8_t)((pos >> 8) & 0xFF));
+}
+
 static void terminal_scroll(void) {
     for (size_t y = 1; y < VGA_HEIGHT; y++) {
         for (size_t x = 0; x < VGA_WIDTH; x++) {
@@ -54,14 +66,10 @@ static void terminal_newline(void) {
     }
 }
 
-void terminal_initialize(void) {
-    terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
-    terminal_clear();
-}
-
 void terminal_putchar(char c) {
     if (c == '\n') {
         terminal_newline();
+        terminal_update_cursor();
         return;
     }
     
@@ -71,16 +79,21 @@ void terminal_putchar(char c) {
     if (terminal_column == VGA_WIDTH) {
         terminal_newline();
     }
+
+    terminal_update_cursor();
 }
 
 void terminal_clear(void) {
     terminal_row = 0;
     terminal_column = 0;
+    
     for (size_t y = 0; y < VGA_HEIGHT; y++) {
         for (size_t x = 0; x < VGA_WIDTH; x++) {
             terminal_putentryat(' ', terminal_color, x, y);
         }
     }
+
+    terminal_update_cursor();
 }
 
 void terminal_setcolor(uint8_t color) {
@@ -95,4 +108,9 @@ void terminal_write(const char* data, size_t size) {
 
 void terminal_writestring(const char* data) {
     terminal_write(data, kstrlen(data));
+}
+
+void terminal_initialize(void) {
+    terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
+    terminal_clear();
 }
