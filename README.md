@@ -9,19 +9,29 @@ This project was created out of curiosity and a desire to understand how operati
 The main goal is not to build a production-ready OS, but to explore concepts such as:
 
 - Boot process
+- Bare-metal development
 - Memory layout
-- Low-level programming (C and Assembly)
-- Interaction with hardware (VGA text mode)
+- Port I/O
+- VGA text mode
+- Keyboard input handling
+- Low-level programming in C and Assembly
 
 ---
 
 ## ⚙️ Features
 
-- Multiboot compliant kernel
+- Multiboot-compliant kernel
 - Written in C and x86 Assembly
 - Direct VGA text mode terminal
-- Terminal support for newline and scrolling
-- Terminal clear and color support
+- Terminal support for:
+  - character output
+  - newline
+  - scrolling
+  - screen clearing
+  - color changes
+- VGA hardware cursor update
+- Basic keyboard input via polling
+- Port I/O helpers with `inb` and `outb`
 - Custom linker script
 - Bootable ISO using GRUB
 
@@ -32,7 +42,11 @@ The main goal is not to build a production-ready OS, but to explore concepts suc
 ```
 lucasOS/
 ├── include/
+│   ├── arch/
+│   │   └── i386/
+│   │       └── io.h
 │   ├── drivers/
+│   │   ├── keyboard.h
 │   │   └── terminal.h
 │   └── lib/
 │       └── kstring.h
@@ -42,6 +56,7 @@ lucasOS/
 │   │       └── boot/
 │   │           └── boot.s
 │   ├── drivers/
+│   │   ├── keyboard.c
 │   │   └── terminal.c
 │   ├── kernel/
 │   │   └── kmain.c
@@ -92,16 +107,18 @@ Through this project, I learned:
 - The role of a linker script
 - How bootloaders like GRUB load a kernel
 - Basics of system-level programming
+- How to interact with hardware through I/O ports
+- How keyboard input works at a low level using scancodes
 
 ---
 
 ## 🔮 Future Plans
 
-- Add VGA hardware cursor support
 - Implement serial output for debugging
 - Implement GDT (Global Descriptor Table)
 - Add interrupt handling (IDT)
-- Basic keyboard input
+- start building basic shell-like interaction
+- improve keyboard support
 
 ---
 
