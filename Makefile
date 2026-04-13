@@ -11,7 +11,9 @@ ISO = $(TARGET).iso
 C_SOURCES = \
 	src/kernel/kmain.c \
 	src/drivers/terminal.c \
-	src/lib/kstring.c
+	src/drivers/keyboard.c \
+	src/lib/kstring.c 
+	
 
 ASM_SOURCES = \
 	src/arch/i386/boot/boot.s
