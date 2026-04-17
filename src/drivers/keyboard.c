@@ -54,6 +54,7 @@ static char keyboard_scancode_to_ascii(uint8_t scancode) {
 
         case 0x39: return ' ';
         case 0x1C: return '\n';
+        case 0x0E: return '\b';
 
         default:   return 0;
     }

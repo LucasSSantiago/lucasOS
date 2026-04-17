@@ -1,6 +1,7 @@
 #include <drivers/terminal.h>
 #include <drivers/keyboard.h>>
 #include <kernel/kmain.h>
+#include <lib/kstring.h>
 
 void kernel_main(void) {
     terminal_initialize();

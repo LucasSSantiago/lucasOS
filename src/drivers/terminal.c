@@ -56,6 +56,22 @@ static void terminal_scroll(void) {
     }
 }
 
+static void terminal_backspace (void) {
+    if (terminal_column == 0) {
+        if (terminal_row == 0) {
+            return;
+        }
+
+        terminal_row--;
+        terminal_column = VGA_WIDTH - 1;
+    } else {
+        terminal_column--;
+    }
+
+    terminal_putentryat(' ', terminal_color, terminal_column, terminal_row);
+    terminal_update_cursor();
+}
+
 static void terminal_newline(void) {
     terminal_column = 0;
 
@@ -72,7 +88,12 @@ void terminal_putchar(char c) {
         terminal_update_cursor();
         return;
     }
-    
+
+    if (c == '\b') {
+        terminal_backspace();
+        return;
+    }
+
     terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
     terminal_column++;
 

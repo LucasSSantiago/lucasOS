@@ -12,7 +12,7 @@ C_SOURCES = \
 	src/kernel/kmain.c \
 	src/drivers/terminal.c \
 	src/drivers/keyboard.c \
-	src/lib/kstring.c 
+	src/lib/kstring.c
 	
 
 ASM_SOURCES = \
