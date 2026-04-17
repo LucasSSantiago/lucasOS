@@ -31,5 +31,6 @@ void terminal_setcolor(uint8_t color);
 void terminal_putchar(char c);
 void terminal_write(const char* data, size_t size);
 void terminal_writestring(const char* data);
+int terminal_parse_color(const char *name, enum vga_color *out_color);
 
 #endif

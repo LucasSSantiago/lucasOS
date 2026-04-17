@@ -5,6 +5,50 @@
 #include <lib/kstring.h>
 #include <arch/i386/io.h>
 
+int terminal_parse_color(const char *name, enum vga_color *out_color) {
+    if (kstrcmp(name, "blue") == 0) {
+        *out_color = VGA_COLOR_BLUE;
+        return 1;
+    }
+
+    if (kstrcmp(name, "green") == 0) {
+        *out_color = VGA_COLOR_GREEN;
+        return 1;
+    }
+
+    if (kstrcmp(name, "cyan") == 0) {
+        *out_color = VGA_COLOR_CYAN;
+        return 1;
+    }
+
+    if (kstrcmp(name, "red") == 0) {
+        *out_color = VGA_COLOR_RED;
+        return 1;
+    }
+
+    if (kstrcmp(name, "magenta") == 0) {
+        *out_color = VGA_COLOR_MAGENTA;
+        return 1;
+    }
+
+    if (kstrcmp(name, "brown") == 0) {
+        *out_color = VGA_COLOR_BROWN;
+        return 1;
+    }
+
+    if (kstrcmp(name, "light_grey") == 0) {
+        *out_color = VGA_COLOR_LIGHT_GREY;
+        return 1;
+    }
+
+    if (kstrcmp(name, "white") == 0) {
+        *out_color = VGA_COLOR_WHITE;
+        return 1;
+    }
+    
+    return 0;
+}
+
 uint8_t terminal_make_color(uint8_t fg, uint8_t bg) {
     return fg | bg << 4;
 }

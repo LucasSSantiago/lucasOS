@@ -5,18 +5,51 @@
 
 #define MAX_COMMAND_LENGTH 128
 
+static int starts_with(const char *str, const char *prefix) {
+    size_t i = 0;
+
+    while (prefix[i] != '\0') {
+        if (str[i] != prefix[i]) {
+            return 0;
+        }
+        i++;
+    }
+    return 1;
+}
+
 static void print_prompt(void) {
     terminal_writestring("> ");
 }
 
 static void process_command(const char *command) {
+    enum vga_color color;
+
     if (kstrcmp(command, "help") == 0) {
-        terminal_setcolor(terminal_make_color(VGA_COLOR_CYAN, VGA_COLOR_BLACK));
-        terminal_writestring("Available commands: \nhelp \nclear\n");
-        terminal_setcolor(terminal_make_color(VGA_COLOR_LIGHT_GREEN, VGA_COLOR_BLACK));
-    } else if (kstrcmp(command, "clear") == 0) {
+        terminal_writestring("Available commands:\n");
+        terminal_writestring("help\n");
+        terminal_writestring("clear\n");
+        terminal_writestring("setcolor <color>\n");
+    } 
+
+    else if (kstrcmp(command, "clear") == 0) {
         terminal_clear();
-    } else if (*command != '\0') {
+    }
+
+    else if (starts_with(command, "setcolor ")) {
+        const char *color_name = command + 9;
+
+        if (terminal_parse_color(color_name, &color)) {
+            terminal_setcolor(terminal_make_color(color, VGA_COLOR_BLACK));
+            terminal_writestring("Color changed successfully\n");
+        } else {
+            terminal_writestring("Unknown color: ");
+            terminal_writestring(color_name);
+            terminal_putchar('\n');
+        }
+
+    }
+
+    else if (*command != '\0') {
         terminal_writestring("Unknown command: ");
         terminal_writestring(command);
         terminal_putchar('\n');
