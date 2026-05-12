@@ -10,6 +10,7 @@ ISO = $(TARGET).iso
 
 C_SOURCES = \
 	src/kernel/kmain.c \
+	src/kernel/shell.c \
 	src/drivers/terminal.c \
 	src/drivers/keyboard.c \
 	src/lib/kstring.c

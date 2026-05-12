@@ -22,3 +22,18 @@ int kstrcmp(const char *a, const char *b) {
 
     return (unsigned char)a[i] - (unsigned char)b[i];
 }
+
+void kstrncpy(char *dest, const char *src, size_t max) {
+    if (max == 0) {
+        return;
+    }
+
+    size_t i = 0;
+
+    while (i < max - 1 && src[i] != '\0') {
+        dest[i] = src[i];
+        i++;
+    }
+
+    dest[i] = '\0';
+}

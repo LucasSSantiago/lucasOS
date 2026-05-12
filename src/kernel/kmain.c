@@ -1,113 +1,23 @@
 #include <drivers/terminal.h>
 #include <drivers/keyboard.h>
 #include <kernel/kmain.h>
-#include <lib/kstring.h>
-
-#define MAX_COMMAND_LENGTH 128
-
-static int starts_with(const char *str, const char *prefix) {
-    size_t i = 0;
-
-    while (prefix[i] != '\0') {
-        if (str[i] != prefix[i]) {
-            return 0;
-        }
-        i++;
-    }
-    return 1;
-}
-
-static void print_prompt(void) {
-    terminal_writestring("> ");
-}
-
-static void process_command(const char *command) {
-    enum vga_color color;
-
-    if (kstrcmp(command, "help") == 0) {
-        terminal_writestring("Available commands:\n");
-        terminal_writestring("help\n");
-        terminal_writestring("clear\n");
-        terminal_writestring("setcolor <color>\n");
-    } 
-
-    else if (kstrcmp(command, "clear") == 0) {
-        terminal_clear();
-    }
-
-    else if (starts_with(command, "setcolor ")) {
-        const char *color_name = command + 9;
-
-        if (terminal_parse_color(color_name, &color)) {
-            terminal_setcolor(terminal_make_color(color, VGA_COLOR_BLACK));
-            terminal_writestring("Color changed successfully\n");
-        } else {
-            terminal_writestring("Unknown color: ");
-            terminal_writestring(color_name);
-            terminal_putchar('\n');
-        }
-
-    }
-
-    else if (*command != '\0') {
-        terminal_writestring("Unknown command: ");
-        terminal_writestring(command);
-        terminal_putchar('\n');
-    }
-}
-
-static void handle_input_char(char c, char *command_buffer, size_t *command_length) {
-    if (c == '\b') {
-        if (*command_length > 0) {
-            (*command_length)--;
-            command_buffer[*command_length] = '\0';
-            terminal_putchar('\b');
-        }
-        return;
-    }
-
-    if (c == '\n') {
-        command_buffer[*command_length] = '\0';
-        terminal_putchar('\n');
-
-        process_command(command_buffer);
-
-        *command_length = 0;
-        command_buffer[0] = '\0';
-
-        print_prompt();
-        return;
-    }
-
-    if (*command_length < MAX_COMMAND_LENGTH -1) {
-        command_buffer[*command_length] = c;
-        (*command_length)++;
-        command_buffer[*command_length] = '\0';
-
-        terminal_putchar(c);
-    }
-}
+#include <kernel/shell.h>
 
 void kernel_main(void) {
-    char command_buffer[MAX_COMMAND_LENGTH];
-    size_t command_length = 0;
-    
-    terminal_initialize();
+    shell_initialize();
     terminal_setcolor(terminal_make_color(VGA_COLOR_LIGHT_GREEN, VGA_COLOR_BLACK));
-
-    command_buffer[0] = '\0';
 
     terminal_writestring("LucasOS\n");
     terminal_writestring("32-bit x86 kernel\n");
     terminal_writestring("------------------------------\n");
-    terminal_writestring("Keyboard test ready.\n");
-    print_prompt();
+
+    shell_initialize();
 
     while (1) {
         char c = keyboard_getchar();
 
         if (c != 0) {
-            handle_input_char(c, command_buffer, &command_length);
+            shell_handle_input_char(c);
         }
     }
 }
