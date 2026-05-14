@@ -16,7 +16,7 @@ static char command_buffer[SHELL_COMMAND_BUFFER_SIZE];
 static int command_length = 0;
 
 static char command_history[SHELL_HISTORY_SIZE][SHELL_COMMAND_BUFFER_SIZE];
-size_t history_count = 0;
+static size_t history_count = 0;
 
 static void print_prompt(void);
 static void process_command(char *command);

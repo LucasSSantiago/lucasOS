@@ -4,7 +4,7 @@
 #include <kernel/shell.h>
 
 void kernel_main(void) {
-    shell_initialize();
+    terminal_initialize();
     terminal_setcolor(terminal_make_color(VGA_COLOR_LIGHT_GREEN, VGA_COLOR_BLACK));
 
     terminal_writestring("LucasOS\n");
