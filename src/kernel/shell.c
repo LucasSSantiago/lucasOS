@@ -26,12 +26,14 @@ static void command_help(const char *args);
 static void command_clear(const char *args);
 static void command_setcolor(const char *args);
 static void command_history_handler(const char *args);
+static void command_echo(const char *args);
 
 static struct shell_command commands[] = {
     {"help", "Show available commands", command_help},
     {"clear", "Clear the screen", command_clear},
     {"setcolor", "change text color. Example: setcolor red", command_setcolor},
     {"history", "Show command history", command_history_handler},
+    {"echo", "Print text to the terminal", command_echo},
     {0,0,0}
 };
 
@@ -200,4 +202,13 @@ static void command_history_handler(const char *args) {
         terminal_writestring(command_history[i]);
         terminal_putchar('\n');
     }
+}
+
+static void command_echo(const char *args) {
+    if (args == 0 || args[0] == '\0') {
+        return;
+    }
+    
+    terminal_writestring(args);
+    terminal_putchar('\n');
 }
