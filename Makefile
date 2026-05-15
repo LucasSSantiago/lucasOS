@@ -12,6 +12,7 @@ C_SOURCES = \
 	src/kernel/kmain.c \
 	src/kernel/shell.c \
 	src/drivers/terminal.c \
+	src/drivers/serial.c \
 	src/drivers/keyboard.c \
 	src/lib/kstring.c
 	
@@ -47,7 +48,10 @@ iso: $(TARGET)
 	grub-mkrescue -o $(ISO) isodir
 
 run: iso
-	qemu-system-i386 -cdrom $(ISO)
+	qemu-system-i386 -cdrom $(ISO) -serial mon:stdio
+
+run-log: iso
+	qemu-system-i386 -cdrom $(ISO) -serial file:serial.log
 
 clean:
-	rm -rf $(OBJECTS) $(TARGET) $(ISO) isodir
+	rm -rf $(OBJECTS) $(TARGET) $(ISO) isodir serial.log
