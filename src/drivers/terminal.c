@@ -68,7 +68,7 @@ static inline uint16_t vga_entry(unsigned char uc, uint8_t color) {
 static size_t terminal_row;
 static size_t terminal_column;
 static uint8_t terminal_color;
-static uint16_t* terminal_buffer = (uint16_t*) VGA_MEMORY;
+static volatile uint16_t* terminal_buffer = (uint16_t*) VGA_MEMORY;
 
 static void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
     const size_t index = y * VGA_WIDTH + x;

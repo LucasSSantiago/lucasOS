@@ -5,11 +5,12 @@
 #include <drivers/serial.h>
 
 void kernel_main(void) {
-    terminal_initialize();
     serial_init();
-
     serial_write_string("[lucasOS] serial initialized\n");
-    serial_write_string("[lucasOS] kernel start\n");
+
+    terminal_initialize();
+
+    serial_write_string("[lucasOS] terminal initialized\n");
 
     terminal_setcolor(terminal_make_color(VGA_COLOR_LIGHT_GREEN, VGA_COLOR_BLACK));
 

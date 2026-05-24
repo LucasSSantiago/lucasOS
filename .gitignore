@@ -1,4 +1,5 @@
 *.o
 *.iso
-myos
+lucasOS
 isodir/
+serial.log
