@@ -14,11 +14,13 @@ C_SOURCES = \
 	src/drivers/terminal.c \
 	src/drivers/serial.c \
 	src/drivers/keyboard.c \
-	src/lib/kstring.c
+	src/lib/kstring.c \
+	src/arch/i386/gdt.c
 	
 
 ASM_SOURCES = \
-	src/arch/i386/boot/boot.s
+	src/arch/i386/boot/boot.s \
+	src/arch/i386/gdt_flush.s
 
 C_OBJECTS = $(C_SOURCES:.c=.o)
 ASM_OBJECTS = $(ASM_SOURCES:.s=.o)
@@ -39,6 +41,12 @@ src/lib/%.o: src/lib/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 src/arch/i386/boot/%.o: src/arch/i386/boot/%.s
+	$(AS) $(ASFLAGS) $< -o $@
+
+src/arch/i386/%.o: src/arch/i386/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+src/arch/i386/%.o: src/arch/i386/%.s
 	$(AS) $(ASFLAGS) $< -o $@
 
 iso: $(TARGET)

@@ -3,10 +3,15 @@
 #include <kernel/kmain.h>
 #include <kernel/shell.h>
 #include <drivers/serial.h>
+#include <arch/i386/gdt.h>
 
 void kernel_main(void) {
     serial_init();
     serial_write_string("[lucasOS] serial initialized\n");
+
+    serial_write_string("[lucasOS] initializing GDT\n");
+    gdt_initialize();
+    serial_write_string("[lucasOS] GDT initialized\n");
 
     terminal_initialize();
 
